@@ -2,10 +2,7 @@ package ru.otus.java.basic.http.server;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.otus.java.basic.http.server.processors.HelloWorldRequestProcessor;
-import ru.otus.java.basic.http.server.processors.OperationAddRequestProcessor;
-import ru.otus.java.basic.http.server.processors.RequestProcessor;
-import ru.otus.java.basic.http.server.processors.UnknownRequestProcessor;
+import ru.otus.java.basic.http.server.processors.*;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -24,6 +21,7 @@ public class Dispatcher {
 
     public Dispatcher() {
         this.router = new HashMap<>();
+        this.router.put("/json", new JsonRequestProcessor());
         this.router.put("/add", new OperationAddRequestProcessor());         // /GET /add => OperationAddRequestProcessor
         this.router.put("/hello_world", new HelloWorldRequestProcessor());   // /GET /hello_world => HelloWorldRequestProcessor
         this.unknownRequestProcessor = new UnknownRequestProcessor();

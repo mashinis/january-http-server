@@ -10,6 +10,7 @@ import java.util.Map;
  * В этом коде добавлены логгеры для информации о начале и успешном завершении парсинга HTTP-запроса.
  */
 public class HttpRequest {
+    private int statusCode = 200; // По умолчанию 200 OK
     private static final Logger LOGGER = LogManager.getLogger(HttpRequest.class);
 
     private String rawRequest;
@@ -28,6 +29,15 @@ public class HttpRequest {
     public HttpRequest(String rawRequest) {
         this.rawRequest = rawRequest;
         parseRequestLine();
+    }
+
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    // Добавьте метод для установки статус кода
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
 
     private void parseRequestLine() {

@@ -25,14 +25,16 @@ public class OperationAddRequestProcessor implements RequestProcessor {
             int b = Integer.parseInt(httpRequest.getParameter("b"));
             int result = a + b;
 
-            String response = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<html><body><h1>" + a + " + " + b + " = " + result + "</h1></body></html>";
+            httpRequest.setStatusCode(200);
+            String response = "HTTP/1.1 " + httpRequest.getStatusCode() + " OK\r\nContent-Type: text/html\r\n\r\n<html><body><h1>" + a + " + " + b + " = " + result + "</h1></body></html>";
             output.write(response.getBytes(StandardCharsets.UTF_8));
 
             LOGGER.info("OperationAddRequestProcessor processed successfully. Result: {}", result);
         } catch (NumberFormatException e) {
             LOGGER.error("Error processing OperationAddRequestProcessor. Invalid parameters.", e);
             // В случае ошибки формата числа отправим клиенту сообщение об ошибке
-            String errorResponse = "HTTP/1.1 400 Bad Request\r\nContent-Type: text/plain\r\n\r\nInvalid parameters";
+            httpRequest.setStatusCode(400);
+            String errorResponse = "HTTP/1.1 " + httpRequest.getStatusCode() + " Bad Request\r\nContent-Type: text/plain\r\n\r\nInvalid parameters";
             output.write(errorResponse.getBytes(StandardCharsets.UTF_8));
         }
     }

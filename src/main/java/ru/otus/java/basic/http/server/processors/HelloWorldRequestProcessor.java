@@ -20,7 +20,8 @@ public class HelloWorldRequestProcessor implements RequestProcessor {
     public void execute(HttpRequest httpRequest, OutputStream output) throws IOException {
         LOGGER.info("Processing HelloWorldRequestProcessor...");
 
-        String response = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<html><body><h1>Hello World!</h1></body></html>";
+        httpRequest.setStatusCode(200);
+        String response = "HTTP/1.1 " + httpRequest.getStatusCode() + " OK\r\nContent-Type: text/html\r\n\r\n<html><body><h1>Hello World!</h1></body></html>";
         output.write(response.getBytes(StandardCharsets.UTF_8));
 
         LOGGER.info("HelloWorldRequestProcessor processed successfully.");
