@@ -35,7 +35,6 @@ public class HttpRequest {
         return statusCode;
     }
 
-    // Добавьте метод для установки статус кода
     public void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
     }
@@ -73,9 +72,3 @@ public class HttpRequest {
         LOGGER.info("HTTP METHOD: {}", method);
     }
 }
-
-
-// http://localhost:8189/add
-// http://localhost:8189/subtract
-// http://localhost:8189/divide
-// http://localhost:8189/multiply

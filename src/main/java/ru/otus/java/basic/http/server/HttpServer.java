@@ -23,7 +23,7 @@ public class HttpServer {
     public HttpServer(int port) {
         this.port = port;
         this.dispatcher = new Dispatcher();
-        this.threadPool = Executors.newFixedThreadPool(10); // Размер пула потоков (в данном случае, 10)
+        this.threadPool = Executors.newFixedThreadPool(10);
     }
 
     public void start() {
@@ -35,7 +35,6 @@ public class HttpServer {
             while (true) {
                 try {
                     Socket socket = serverSocket.accept();
-                    // Используем пул потоков для обработки запроса
                     threadPool.execute(() -> handleClient(socket));
                 } catch (IOException e) {
                     LOGGER.error("Error accepting client connection.", e);
@@ -44,7 +43,6 @@ public class HttpServer {
         } catch (Exception e) {
             LOGGER.error("Error starting the server.", e);
         } finally {
-            // Завершаем работу пула потоков при завершении сервера
             threadPool.shutdown();
             LOGGER.info("Server shutdown complete.");
         }
@@ -58,7 +56,6 @@ public class HttpServer {
             int n = socket.getInputStream().read(buffer);
             String rawRequest = new String(buffer, 0, n);
             HttpRequest httpRequest = new HttpRequest(rawRequest);
-            // Установите статус код ответа, например, 404 Not Found
             httpRequest.setStatusCode(404);
             dispatcher.execute(httpRequest, socket.getOutputStream());
 
@@ -67,7 +64,6 @@ public class HttpServer {
             LOGGER.error("Error handling client connection.", e);
         } finally {
             try {
-                // Закрываем соединение после обработки запроса
                 socket.close();
             } catch (IOException e) {
                 LOGGER.error("Error closing client socket.", e);

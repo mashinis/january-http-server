@@ -32,7 +32,7 @@ public class OperationAddRequestProcessor implements RequestProcessor {
             LOGGER.info("OperationAddRequestProcessor processed successfully. Result: {}", result);
         } catch (NumberFormatException e) {
             LOGGER.error("Error processing OperationAddRequestProcessor. Invalid parameters.", e);
-            // В случае ошибки формата числа отправим клиенту сообщение об ошибке
+
             httpRequest.setStatusCode(400);
             String errorResponse = "HTTP/1.1 " + httpRequest.getStatusCode() + " Bad Request\r\nContent-Type: text/plain\r\n\r\nInvalid parameters";
             output.write(errorResponse.getBytes(StandardCharsets.UTF_8));
