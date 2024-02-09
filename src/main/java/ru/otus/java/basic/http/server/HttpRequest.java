@@ -1,9 +1,18 @@
 package ru.otus.java.basic.http.server;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * В этом коде добавлены логгеры для информации о начале и успешном завершении парсинга HTTP-запроса.
+ */
 public class HttpRequest {
+    private int statusCode = 200; // По умолчанию 200 OK
+    private static final Logger LOGGER = LogManager.getLogger(HttpRequest.class);
+
     private String rawRequest;
     private String uri;
     private HttpMethod method;
@@ -22,7 +31,17 @@ public class HttpRequest {
         parseRequestLine();
     }
 
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
+
     private void parseRequestLine() {
+        LOGGER.info("Parsing HTTP request line...");
+
         int startIndex = rawRequest.indexOf(' ');
         int endIndex = rawRequest.indexOf(' ', startIndex + 1);
         this.uri = rawRequest.substring(startIndex + 1, endIndex);
@@ -37,6 +56,8 @@ public class HttpRequest {
             }
         }
         this.method = HttpMethod.valueOf(rawRequest.substring(0, startIndex));
+
+        LOGGER.info("HTTP request line parsed successfully. URI: {}, Method: {}", uri, method);
     }
 
     public String getParameter(String key) {
@@ -45,14 +66,9 @@ public class HttpRequest {
 
     public void printInfo(boolean showRawRequest) {
         if (showRawRequest) {
-            System.out.println(rawRequest);
+            LOGGER.info(rawRequest);
         }
-        System.out.println("URI: " + uri);
-        System.out.println("HTTP METHOD: " + method);
+        LOGGER.info("URI: {}", uri);
+        LOGGER.info("HTTP METHOD: {}", method);
     }
 }
-
-// http://localhost:8189/add
-// http://localhost:8189/subtract
-// http://localhost:8189/divide
-// http://localhost:8189/multiply
